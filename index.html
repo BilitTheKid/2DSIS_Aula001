@@ -12,14 +12,12 @@ body {
   color: #333;
 }
 
-/* Título */
 h1 {
   text-align: center;
   color: white;
   margin-top: 20px;
 }
 
-/* Barra de busca */
 .busca-box {
   display: flex;
   justify-content: center;
@@ -36,7 +34,6 @@ h1 {
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
-/* Área de adicionar */
 .add-box {
   text-align: center;
 }
@@ -55,26 +52,34 @@ button {
   background: #00c9a7;
   color: white;
   cursor: pointer;
-  transition: 0.2s;
 }
 
-button:hover {
-  background: #00a78b;
-}
-
-/* Cards */
 .container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   padding: 20px;
+
+  /* 🔥 BARRA DE ROLAGEM */
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Scroll bonito */
+.container::-webkit-scrollbar {
+  width: 10px;
+}
+
+.container::-webkit-scrollbar-thumb {
+  background: #00c9a7;
+  border-radius: 10px;
 }
 
 .card {
   background: white;
-  margin: 15px;
+  margin: 10px;
   padding: 20px;
-  width: 180px;
+  width: 160px;
   border-radius: 15px;
   cursor: pointer;
   box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -104,24 +109,11 @@ button:hover {
   padding: 20px;
   width: 320px;
   border-radius: 12px;
-  animation: aparecer 0.3s ease;
-}
-
-@keyframes aparecer {
-  from { transform: scale(0.8); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
 }
 
 #fechar {
   float: right;
   cursor: pointer;
-  font-size: 20px;
-}
-
-#media {
-  margin-top: 10px;
-  font-weight: bold;
-  color: #444;
 }
 
 </style>
@@ -153,9 +145,36 @@ button:hover {
 
 <script>
 let alunos = [
-  { nome: "Ana", notas: [8,7,9,10,6] },
-  { nome: "Bruno", notas: [5,6,7,8,7] },
-  { nome: "Carlos", notas: [9,9,8,10,9] }
+  {nome:"Aluno 1", notas:[7,8,6,9,7]},
+  {nome:"Aluno 2", notas:[5,6,7,8,6]},
+  {nome:"Aluno 3", notas:[9,9,8,10,9]},
+  {nome:"Aluno 4", notas:[6,7,5,8,6]},
+  {nome:"Aluno 5", notas:[8,7,9,9,8]},
+  {nome:"Aluno 6", notas:[4,5,6,5,4]},
+  {nome:"Aluno 7", notas:[7,8,7,6,7]},
+  {nome:"Aluno 8", notas:[9,10,9,8,9]},
+  {nome:"Aluno 9", notas:[6,6,7,7,6]},
+  {nome:"Aluno 10", notas:[8,9,8,9,8]},
+  {nome:"Aluno 11", notas:[5,6,5,6,5]},
+  {nome:"Aluno 12", notas:[7,7,8,7,7]},
+  {nome:"Aluno 13", notas:[9,8,9,10,9]},
+  {nome:"Aluno 14", notas:[6,5,6,7,6]},
+  {nome:"Aluno 15", notas:[8,8,7,8,8]},
+  {nome:"Aluno 16", notas:[4,5,4,5,4]},
+  {nome:"Aluno 17", notas:[7,6,7,6,7]},
+  {nome:"Aluno 18", notas:[9,9,10,9,9]},
+  {nome:"Aluno 19", notas:[6,7,6,7,6]},
+  {nome:"Aluno 20", notas:[8,9,8,9,8]},
+  {nome:"Aluno 21", notas:[5,5,6,5,5]},
+  {nome:"Aluno 22", notas:[7,8,7,8,7]},
+  {nome:"Aluno 23", notas:[9,8,9,9,9]},
+  {nome:"Aluno 24", notas:[6,6,5,6,6]},
+  {nome:"Aluno 25", notas:[8,7,8,7,8]},
+  {nome:"Aluno 26", notas:[4,4,5,4,4]},
+  {nome:"Aluno 27", notas:[7,7,6,7,7]},
+  {nome:"Aluno 28", notas:[9,10,9,10,9]},
+  {nome:"Aluno 29", notas:[6,7,6,7,6]},
+  {nome:"Aluno 30", notas:[8,8,9,8,8]}
 ];
 
 const catalogo = document.getElementById("catalogo");
@@ -171,7 +190,6 @@ function render() {
   alunos
     .filter(a => normalizar(a.nome).includes(filtro))
     .forEach(aluno => {
-
       const card = document.createElement("div");
       card.className = "card";
       card.innerText = aluno.nome;
@@ -204,14 +222,9 @@ function abrirModal(aluno) {
 
 function adicionarAluno() {
   const nome = document.getElementById("novoNome").value;
-
   if(nome.trim() === "") return;
 
-  alunos.push({
-    nome: nome,
-    notas: [0,0,0,0,0]
-  });
-
+  alunos.push({ nome: nome, notas: [0,0,0,0,0] });
   document.getElementById("novoNome").value = "";
   render();
 }
