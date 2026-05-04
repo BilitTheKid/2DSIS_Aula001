@@ -6,41 +6,88 @@
 
 <style>
 body {
-  font-family: Arial;
-  background: #eef2f7;
-  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  margin: 0;
+  color: #333;
 }
 
+/* Título */
 h1 {
+  text-align: center;
+  color: white;
+  margin-top: 20px;
+}
+
+/* Barra de busca */
+.busca-box {
+  display: flex;
+  justify-content: center;
   margin: 20px;
 }
 
-input, button {
-  padding: 8px;
-  margin: 5px;
+#busca {
+  width: 300px;
+  padding: 12px 20px;
+  border-radius: 30px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
 }
 
+/* Área de adicionar */
+.add-box {
+  text-align: center;
+}
+
+#novoNome {
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  width: 200px;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  background: #00c9a7;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #00a78b;
+}
+
+/* Cards */
 .container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding: 20px;
 }
 
 .card {
   background: white;
-  margin: 10px;
-  padding: 15px;
-  width: 160px;
-  border-radius: 12px;
+  margin: 15px;
+  padding: 20px;
+  width: 180px;
+  border-radius: 15px;
   cursor: pointer;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-  transition: 0.2s;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  transition: 0.3s;
+  text-align: center;
+  font-weight: bold;
 }
 
 .card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px) scale(1.05);
 }
 
+/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -55,13 +102,26 @@ input, button {
   background: white;
   margin: 10% auto;
   padding: 20px;
-  width: 300px;
-  border-radius: 10px;
+  width: 320px;
+  border-radius: 12px;
+  animation: aparecer 0.3s ease;
+}
+
+@keyframes aparecer {
+  from { transform: scale(0.8); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
 }
 
 #fechar {
   float: right;
   cursor: pointer;
+  font-size: 20px;
+}
+
+#media {
+  margin-top: 10px;
+  font-weight: bold;
+  color: #444;
 }
 
 </style>
@@ -71,11 +131,14 @@ input, button {
 
 <h1>📚 Catálogo de Alunos</h1>
 
-<input type="text" id="busca" placeholder="Buscar aluno...">
-<br>
+<div class="busca-box">
+  <input type="text" id="busca" placeholder="🔍 Buscar aluno...">
+</div>
 
-<input type="text" id="novoNome" placeholder="Nome do aluno">
-<button onclick="adicionarAluno()">Adicionar</button>
+<div class="add-box">
+  <input type="text" id="novoNome" placeholder="Nome do aluno">
+  <button onclick="adicionarAluno()">Adicionar</button>
+</div>
 
 <div class="container" id="catalogo"></div>
 
@@ -97,12 +160,16 @@ let alunos = [
 
 const catalogo = document.getElementById("catalogo");
 
+function normalizar(texto) {
+  return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 function render() {
   catalogo.innerHTML = "";
-  const filtro = document.getElementById("busca").value.toLowerCase();
+  const filtro = normalizar(document.getElementById("busca").value);
 
   alunos
-    .filter(a => a.nome.toLowerCase().includes(filtro))
+    .filter(a => normalizar(a.nome).includes(filtro))
     .forEach(aluno => {
 
       const card = document.createElement("div");
